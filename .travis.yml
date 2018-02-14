@@ -91,16 +91,16 @@ jobs:
     - stage: OSX wheel build
       os: osx
       osx_image: xcode6.4
-      if: tag IS present
+      # if: tag IS present
       before_install:
         - brew update
       install:
         - brew install libssh2
         - wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py
         - sudo python get-pip.py
-        - sudo pip install -U pip
-        - sudo pip install -U delocate twine wheel pip setuptools
-        - pip install --user -r requirements.txt
+        - sudo -H pip install -U pip
+        - sudo -H pip install -U delocate twine wheel pip setuptools
+        - sudo -H pip install -r requirements.txt
         - pip wheel --no-deps .
       script:
         - delocate-listdeps --all *.whl
@@ -108,7 +108,7 @@ jobs:
         - delocate-listdeps --all *.whl
         - ls -l *.whl
         - brew uninstall libssh2
-        - pip install --user -v *.whl
+        - sudo -H pip install -v *.whl
         - pwd; mkdir temp; cd temp; pwd
         - python -c "import pssh.pssh2_client"
         - cd ..; pwd
